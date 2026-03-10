@@ -2,55 +2,138 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OrderForYouDZ - حاسبة السعر النهائي</title>
+
 <style>
-body { font-family: Arial; direction: rtl; display:flex; justify-content:center; align-items:center; height:100vh; background:#f0f8ff; margin:0;}
-.calculator { background: url('background.png') no-repeat center center; background-size: cover; padding:30px; border-radius:15px; box-shadow:0 10px 20px rgba(0,0,0,0.15); width:350px; text-align:center;}
-h1 { color:#2c3e50; font-size:28px; margin-bottom:10px;}
-img.logo { width:100px; margin-bottom:15px; border-radius:10px;}
-h2 { margin-bottom:15px; color:#2c3e50;}
-p { color:#34495e; font-size:16px; margin-bottom:20px;}
-input { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:18px;}
-input:focus { border-color:#ff6b6b; box-shadow:0 0 5px #ff6b6b; outline:none; }
-.result { margin-top:20px; font-size:24px; font-weight:bold; color:#27ae60; background:rgba(224, 255, 224, 0.8); padding:15px; border-radius:10px;}
+
+body{
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+    background:#f0f8ff;
+}
+
+.calculator{
+    width:350px;
+    padding:30px;
+    text-align:center;
+    border-radius:15px;
+    background:url("background.png") no-repeat center;
+    background-size:cover;
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+
+h1{
+    font-size:26px;
+    color:#2c3e50;
+    margin-bottom:10px;
+}
+
+.logo{
+    width:100px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+p{
+    color:#34495e;
+    font-size:16px;
+    margin-bottom:20px;
+}
+
+h2{
+    color:#2c3e50;
+    margin-bottom:10px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:18px;
+}
+
+input:focus{
+    border-color:#ff6b6b;
+    box-shadow:0 0 5px #ff6b6b;
+    outline:none;
+}
+
+.result{
+    margin-top:20px;
+    font-size:22px;
+    font-weight:bold;
+    color:#27ae60;
+    background:rgba(224,255,224,0.85);
+    padding:15px;
+    border-radius:10px;
+}
+
 </style>
 </head>
+
 <body>
+
 <div class="calculator">
 
-<h1>OrderForYouDZ - حاسبة السعر النهائي</h1>
+<h1>OrderForYouDZ</h1>
+
 <img src="logo.png" alt="شعار الموقع" class="logo">
-<p>احسب السعر النهائي للمنتج بسرعة وسهولة بالدينار الجزائري!</p>
+
+<p>احسب السعر النهائي للمنتج بسرعة وسهولة بالدينار الجزائري</p>
+
 <h2>السعر النهائي للمنتج</h2>
 
-<input type="number" id="usdPrice" placeholder="أدخل السعر بالدولار" oninput="calculateFinal()">
+<input 
+type="number" 
+id="usdPrice" 
+placeholder="أدخل السعر بالدولار"
+min="0"
+step="0.01"
+oninput="calculateFinal()"
+/>
 
-<div class="result" id="result"></div>
+<div class="result" id="result">أدخل السعر بالدولار</div>
+
 </div>
 
 <script>
-const exchangeRate = 250; // سعر الدولار بالدينار الجزائري
-const fixedCommission = 250; // العمولة الثابتة إذا السعر < 10 دولار
-const percentageRate = 10; // العمولة بالنسبة المئوية إذا السعر >= 10 دولار
 
-function calculateFinal() {
+const exchangeRate = 250;      // سعر الدولار بالدينار
+const fixedCommission = 250;  // عمولة ثابتة إذا السعر أقل من 10$
+const percentageRate = 10;    // عمولة 10% إذا السعر 10$ أو أكثر
+
+function calculateFinal(){
+
     const usd = parseFloat(document.getElementById("usdPrice").value);
-    if (isNaN(usd)) {
-        document.getElementById("result").innerHTML = "أدخل السعر بالدولار";
+    const result = document.getElementById("result");
+
+    if(isNaN(usd)){
+        result.innerHTML = "أدخل السعر بالدولار";
         return;
     }
 
-    let total;
     const priceDZD = usd * exchangeRate;
+    let total = 0;
 
-    if (usd < 10) {
+    if(usd < 10){
         total = priceDZD + fixedCommission;
-    } else {
-        total = priceDZD * (1 + percentageRate/100);
+    }else{
+        total = priceDZD * (1 + percentageRate / 100);
     }
 
-    document.getElementById("result").innerHTML = `السعر النهائي: ${total.toLocaleString()} دج`;
+    result.innerHTML = "السعر النهائي: " + total.toLocaleString() + " دج";
+
 }
+
 </script>
+
 </body>
 </html>
